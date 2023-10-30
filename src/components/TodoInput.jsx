@@ -7,6 +7,7 @@ import { addTodos, editTodo } from "../redux/reducers/TodoReducer";
 export default function TodoInput() {
   const dispatch = useDispatch();
   const [input, setInput] = useState("");
+  const [warning, setWarning] = useState(false);
   const setEditTodos = useSelector((state) => state.todo.setEditTodos);
 
   useEffect(() => {
@@ -17,21 +18,27 @@ export default function TodoInput() {
 
   function submitHandler(event) {
     event.preventDefault();
-    if (setEditTodos) {
-      dispatch(editTodo(setEditTodos.id, input));
-      setInput("");
+    if (input.trim() < 1) {
+      setWarning(true);
     } else {
-      dispatch(addTodos(input));
-      setInput("");
+      setWarning(false);
+      if (setEditTodos) {
+        dispatch(editTodo(setEditTodos.id, input));
+        setInput("");
+      } else {
+        dispatch(addTodos(input));
+        setInput("");
+      }
     }
   }
 
-  function handlerInput(e){
-    setInput(e.target.value)
+  function handlerInput(e) {
+      setInput(e.target.value);
+      setWarning(false)
   }
   return (
     <>
-    <span className="h1 text-3xl font-bold">Todo List App</span>
+      <span className="h1 text-3xl font-bold">Todo List App</span>
       <form className="flex justify-center">
         <input
           type="text"
@@ -47,6 +54,14 @@ export default function TodoInput() {
           {setEditTodos ? "Edit" : "Add"}
         </button>
       </form>
+      {warning ? (
+        <p className="font-5xl font-bold text-red-500">
+          {" "}
+          Anda belum mengisi task{" "}
+        </p>
+      ) : (
+        ""
+      )}
     </>
   );
 }

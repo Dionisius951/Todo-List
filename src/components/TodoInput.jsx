@@ -31,16 +31,17 @@ export default function TodoInput() {
   }
   return (
     <>
+    <span className="h1 text-3xl font-bold">Todo List App</span>
       <form className="flex justify-center">
         <input
           type="text"
           placeholder="What to do...."
-          className="rounded border-2 border-black py-3 px-3 w-80 mx-4 md:max-md"
+          className="rounded border-2 border-black py-3 px-3 w-[18rem] mx-2"
           value={input}
           onChange={handlerInput}
         />
         <button
-          className="rounded border-2 bg-cyan-500 text-neutral-50 px-5 py-2"
+          className="rounded border-2 bg-blue-600 text-neutral-50 px-5 py-2 "
           onClick={submitHandler}
         >
           {setEditTodos ? "Edit" : "Add"}

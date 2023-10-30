@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   changeStatus,
@@ -38,9 +38,21 @@ export default function TodoList() {
     }
   }
 
+  useEffect(() => {
+    if (filter === "All") {
+      setFilteredTodos(todos);
+    } else if (filter === "Active") {
+      const activeTodos = todos.filter((todo) => !todo.status);
+      setFilteredTodos(activeTodos);
+    } else if (filter === "Complete") {
+      const completeTodos = todos.filter((todo) => todo.status);
+      setFilteredTodos(completeTodos);
+    }
+  }, [todos, filter]);
+
   return (
-    <div className="container flex flex-col justify-center items-center">
-      <div className="button w-96">
+    <div className="container flex flex-col justify-center items-center gap-8">
+      <div className="button w-[22rem]">
         <div className="flex gap-5">
           <button
             className={`border-2 rounded py-2 px-4 ${
@@ -74,10 +86,10 @@ export default function TodoList() {
           </button>
         </div>
       </div>
-      <div className="flex flex-col justify-center items-center p-4 gap-5">
+      <div className="flex flex-col justify-center items-center p-4 gap-5 ">
         {filteredTodos.map((todo) => (
           <div
-            className="rounded border-2 border-black py-3 px-4 w-96 flex justify-between"
+            className="rounded border-2 border-black py-3 px-4 w-[22rem] flex justify-between "
             key={todo.id}
           >
             <div className={`flex gap-3 ${todo.status ? "line-through" : ""}`}>

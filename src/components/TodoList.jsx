@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeStatus } from "../redux/reducers/TodoReducer";
+import { changeStatus, DeleteTodo } from "../redux/reducers/TodoReducer";
 
 export default function TodoList() {
   const dispatch = useDispatch();
@@ -10,11 +10,16 @@ export default function TodoList() {
   function checkHandle(id) {
     dispatch(changeStatus(id))
   }
+
+  function deleteHandler(id){
+    dispatch(DeleteTodo(id))
+  }
+
   return (
     <div className="flex flex-col justify-center items-center p-4 gap-5">
       {todos.map((todo) => (
         <div
-          className="rounded border-2 border-black py-2 px-3 w-96 flex justify-between"
+          className="rounded border-2 border-black py-3 px-4 w-96 flex justify-between"
           key={todo.id}
         >
           <div className={`flex gap-3 ${todo.status ? "line-through" : ""}`}>
@@ -26,7 +31,7 @@ export default function TodoList() {
             {todo.value}
           </div>
           <div className="icon flex justify-between gap-3">
-            <button>✏</button> <button>❌</button>
+            <button>✏</button> <button onClick={()=> deleteHandler(todo.id)}>❌</button>
           </div>
         </div>
       ))}

@@ -30,6 +30,12 @@ export default function TodoReducer(state = initialState, action) {
       return {
         todos: UpdateTodos,
       };
+      case "DELETE_TODO":
+        const DeleteTodo = state.todos.filter(todo => todo.id != action.payload);
+        return {
+          todos : DeleteTodo
+        }
+        
     default:
       return state;
   }
@@ -44,6 +50,12 @@ export function addTodos(value) {
 export function changeStatus(id) {
   return {
     type: "STATUS_TODO",
+    payload: id,
+  };
+}
+export function DeleteTodo(id) {
+  return {
+    type: "DELETE_TODO",
     payload: id,
   };
 }

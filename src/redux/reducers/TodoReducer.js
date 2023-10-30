@@ -1,9 +1,10 @@
 const initialState = {
+  setEditTodo: null,
   todos: [
     { id: 1, value: "Belajar React", status: false },
     { id: 2, value: "Belajar Redux", status: false },
     { id: 3, value: "Belajar HTML CSS JS", status: true },
-  ],
+  ]
 };
 
 export default function TodoReducer(state = initialState, action) {
@@ -28,14 +29,29 @@ export default function TodoReducer(state = initialState, action) {
         return todo;
       });
       return {
-        todos: UpdateTodos,
+        todos: UpdateTodos
       };
       case "DELETE_TODO":
         const DeleteTodo = state.todos.filter(todo => todo.id != action.payload);
         return {
           todos : DeleteTodo
         }
-        
+      case "EDIT_TODO":
+        const EditTodo = state.todos.map((todo) => {
+          if (todo.id === action.payload.id) {
+            return { ...todo, value: action.payload.updatedValue};
+          }
+          return todo;
+        });
+        return {
+          todos : EditTodo,
+          setEditTodo : null
+        }
+      case "SET_EDIT_TODO":
+        return {
+          ...state,
+          setEditTodos: action.payload
+        };
     default:
       return state;
   }
@@ -59,3 +75,16 @@ export function DeleteTodo(id) {
     payload: id,
   };
 }
+
+export function editTodo (id, updatedValue) {
+  return {
+    type: "EDIT_TODO",
+    payload: { id, updatedValue }
+  };
+};
+export function setEditTodo(id) {
+  return {
+    type: "SET_EDIT_TODO",
+    payload: id
+  };
+};
